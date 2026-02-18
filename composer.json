@@ -7,9 +7,6 @@
     "repositories": [{
         "type": "composer",
         "url": "https://packages.aimeos.org/aimeoscom"
-    }, {
-        "type": "path",
-        "url": "packages/*"
     }],
     "require": {
         "php": "^8.2",
