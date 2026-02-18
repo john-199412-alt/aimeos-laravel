@@ -22,8 +22,8 @@ COPY . .
 # Install PHP dependencies
 RUN composer install --ignore-platform-reqs --optimize-autoloader --no-interaction
 
-# Expose port (just documentation, Railway ignores this)
+# Expose port (just documentation)
 EXPOSE 8000
 
-# 🚀 IMPORTANT FIX
-CMD php artisan serve --host=0.0.0.0 --port=${PORT}
+# 🔥 AUTO RUN MIGRATIONS + START SERVER
+CMD php artisan migrate --force && php artisan aimeos:setup --env=production && php artisan serve --host=0.0.0.0 --port=${PORT}
