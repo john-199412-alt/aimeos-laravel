@@ -22,8 +22,8 @@ COPY . .
 # Install PHP dependencies
 RUN composer install --ignore-platform-reqs --optimize-autoloader --no-interaction
 
-# Expose Railway port
+# Expose port (just documentation, Railway ignores this)
 EXPOSE 8000
 
-# Start PHP built-in server
-CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
+# 🚀 IMPORTANT FIX
+CMD php artisan serve --host=0.0.0.0 --port=${PORT}
