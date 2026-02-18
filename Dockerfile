@@ -27,4 +27,3 @@ EXPOSE 8000
 
 # 🚀 IMPORTANT FIX
 CMD php artisan serve --host=0.0.0.0 --port=${PORT}
-CDD php artisan migrate --force
