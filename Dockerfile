@@ -1,4 +1,4 @@
-﻿# Use PHP CLI image (no Apache)
+﻿﻿# Use PHP CLI image (no Apache)
 FROM php:8.2-cli
 
 # Install required system dependencies and PHP extensions
@@ -22,8 +22,9 @@ COPY . .
 # Install PHP dependencies
 RUN composer install --ignore-platform-reqs --optimize-autoloader --no-interaction
 
-# Expose port (just documentation)
+# Expose port (just documentation, Railway ignores this)
 EXPOSE 8000
 
-# 🔥 AUTO RUN MIGRATIONS + START SERVER
-CMD php artisan migrate --force && php artisan aimeos:setup --env=production && php artisan serve --host=0.0.0.0 --port=${PORT}
+# 🚀 IMPORTANT FIX
+CMD php artisan serve --host=0.0.0.0 --port=${PORT}
+CDD php artisan migrate --force
