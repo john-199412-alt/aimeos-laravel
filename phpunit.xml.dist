@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="vendor/autoload.php" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd" cacheDirectory=".phpunit.cache">
+  <source>
+    <include>
+      <directory suffix=".php">./src</directory>
+    </include>
+  </source>
+  <coverage>
+    <report>
+      <clover outputFile="coverage.xml"/>
+    </report>
+  </coverage>
+  <php>
+    <env name="APP_ENV" value="testing"/>
+    <env name="CACHE_DRIVER" value="array"/>
+    <env name="SESSION_DRIVER" value="array"/>
+  </php>
+  <testsuites>
+    <testsuite name="command">
+      <file>./tests/Command/SetupCommandTest.php</file>
+      <file>./tests/Command/ClearCommandTest.php</file>
+      <file>./tests/Command/JobsCommandTest.php</file>
+      <file>./tests/Command/AccountCommandTest.php</file>
+    </testsuite>
+    <testsuite name="base">
+      <directory>./tests/Base</directory>
+    </testsuite>
+    <testsuite name="controller">
+      <directory>./tests/Controller</directory>
+    </testsuite>
+    <testsuite name="helpers">
+      <file>./tests/HelpersTest.php</file>
+    </testsuite>
+  </testsuites>
+</phpunit>
