@@ -1,6 +1,4 @@
-﻿# Your Dockerfile content here
-@"
-# Use official PHP 8.2 image with Apache
+﻿# Use official PHP 8.2 image with Apache
 FROM php:8.2-apache
 
 # Install system dependencies and PHP extensions required by Aimeos
@@ -25,4 +23,7 @@ WORKDIR /var/www/html
 COPY . .
 
 # Install PHP dependencies
-RUN composer install --ignore-platform-reqs --optimize-autoloader --no-inte
+RUN composer install --ignore-platform-reqs --optimize-autoloader --no-interaction
+
+# Expose port 80
+EXPO
