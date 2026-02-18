@@ -1,4 +1,4 @@
-﻿﻿# Use PHP CLI image (no Apache)
+﻿# Use PHP CLI image (no Apache)
 FROM php:8.2-cli
 
 # Install required system dependencies and PHP extensions
@@ -7,7 +7,10 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libicu-dev \
-    zip unzip curl git \
+    zip \
+    unzip \
+    curl \
+    git \
     && docker-php-ext-install gd intl zip pdo pdo_mysql
 
 # Install Composer
@@ -20,10 +23,13 @@ WORKDIR /app
 COPY . .
 
 # Install PHP dependencies
-RUN composer install --ignore-platform-reqs --optimize-autoloader --no-interaction
+RUN composer install --no-interaction --optimize-autoloader --ignore-platform-reqs
 
-# Expose port (just documentation, Railway ignores this)
+# Set proper permissions for Laravel
+RUN chmod -R 775 storage bootstrap/cache
+
+# Expose port (Railway ignores this but good practice)
 EXPOSE 8000
 
-# 🚀 IMPORTANT FIX
-CMD php artisan serve --host=0.0.0.0 --port=${PORT}
+# Run migrations + Aimeos setup + start server
+CMD php artisan migrate --force && php artisan aimeos:setup --env=production && php artisan serve --host=0.0.0.0 --port=${PORT}
