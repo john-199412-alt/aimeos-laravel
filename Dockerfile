@@ -26,4 +26,4 @@ COPY . .
 RUN composer install --ignore-platform-reqs --optimize-autoloader --no-interaction
 
 # Expose port 80
-EXPO
+EXPOSE 80
