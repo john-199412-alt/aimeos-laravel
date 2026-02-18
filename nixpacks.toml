@@ -1,8 +1,28 @@
-﻿[phases.setup]
-nixPkgs = ['php82', 'php82Packages.composer']
+﻿[variables]
+  NIXPACKS_PHP_VERSION = '8.4'
+
+[phases.setup]
+nixPkgs = [
+  'php84',
+  'php84Extensions.gd',
+  'php84Extensions.intl',
+  'php84Extensions.pdo',
+  'php84Extensions.pdo_mysql',
+  'php84Extensions.mbstring',
+  'php84Extensions.zip',
+  'php84Extensions.curl',
+  'php84Extensions.fileinfo',
+  'php84Extensions.tokenizer',
+  'php84Extensions.xml',
+  'php84Extensions.ctype',
+  'php84Extensions.json',
+  'php84Extensions.bcmath'
+]
 
 [phases.install]
-cmds = ['composer install --no-dev --optimize-autoloader']
+cmds = [
+  'composer install --optimize-autoloader --no-dev --no-interaction --ignore-platform-req=ext-intl --ignore-platform-req=ext-gd'
+]
 
 [phases.build]
 cmds = [
