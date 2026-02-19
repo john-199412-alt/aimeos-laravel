@@ -31,5 +31,8 @@ RUN chmod -R 775 storage bootstrap/cache
 # Expose port (Railway ignores this but good practice)
 EXPOSE 8000
 
-# Run migrations + Aimeos setup + start server
-CMD php artisan migrate --force && php artisan aimeos:setup --env=production && php artisan serve --host=0.0.0.0 --port=${PORT}
+# Run migrations, seed the database, perform Aimeos setup, then start server
+CMD php artisan migrate --force \
+    && php artisan db:seed --force \
+    && php artisan aimeos:setup --env=production \
+    && php artisan serve --host=0.0.0.0 --port=${PORT}
