@@ -10,26 +10,17 @@ RUN apt-get update && apt-get install -y \
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Set working directory
 WORKDIR /app
 
-# Copy project files
 COPY . .
 
 # Install PHP dependencies
 RUN composer install --ignore-platform-reqs --optimize-autoloader --no-interaction
 
-# 🚀 Additional Aimeos setup for public assets & demo data
+# Publish public assets (safe without DB)
 RUN php artisan vendor:publish --tag=public --force \
- && php artisan vendor:publish --tag=assets --force \
- && php artisan storage:link \
- && php artisan aimeos:setup --option=setup/default/demo:1 --option=setup/default/languages:en,ru \
- && php artisan config:cache \
- && php artisan route:cache \
- && php artisan view:clear
+ && php artisan storage:link
 
-# Expose Railway port
 EXPOSE 8000
 
-# Start PHP built-in server
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=${PORT}"]
