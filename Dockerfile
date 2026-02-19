@@ -1,4 +1,4 @@
-﻿﻿# Use PHP CLI image (no Apache)
+﻿# Use PHP CLI image (no Apache)
 FROM php:8.2-cli
 
 # Install required system dependencies and PHP extensions
