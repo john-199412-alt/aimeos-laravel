@@ -1,34 +1,38 @@
+# Use PHP CLI image (no Apache)
 FROM php:8.2-cli
 
-# Install system dependencies
+# Install required system dependencies and PHP extensions
 RUN apt-get update && apt-get install -y \
-    git curl libpng-dev libonig-dev libxml2-dev \
-    libzip-dev libicu-dev zip unzip
-
-# Install ALL required PHP extensions (including mbstring!)
-RUN docker-php-ext-install \
-    pdo_mysql \
-    mbstring \
-    exif \
-    pcntl \
-    bcmath \
-    gd \
-    intl \
-    zip
+    libzip-dev \
+    libpng-dev \
+    libonig-dev \
+    libicu-dev \
+    zip \
+    unzip \
+    curl \
+    git \
+    && docker-php-ext-install gd intl zip pdo pdo_mysql
 
 # Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
+# Set working directory
 WORKDIR /app
+
+# Copy project files
 COPY . .
 
-# Install dependencies
-RUN composer install --optimize-autoloader --no-dev --no-interaction
+# Install PHP dependencies
+RUN composer install --no-interaction --optimize-autoloader --ignore-platform-reqs
 
-# Cache config
-RUN php artisan config:cache && \
-    php artisan route:cache && \
-    php artisan view:cache
+# Set proper permissions for Laravel
+RUN chmod -R 775 storage bootstrap/cache
 
-EXPOSE 8080
-CMD php artisan serve --host=0.0.0.0 --port=$PORT
+# Expose port (Railway ignores this but good practice)
+EXPOSE 8000
+
+# Run migrations, seed the database, perform Aimeos setup, then start server
+CMD php artisan migrate --force \
+    && php artisan db:seed --force \
+    && php artisan aimeos:setup --env=production \
+    && php artisan serve --host=0.0.0.0 --port=${PORT}
